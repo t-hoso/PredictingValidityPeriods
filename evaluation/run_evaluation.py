@@ -35,7 +35,7 @@ if __name__ == '__main__':
     lsi = LsiSvd()
     lsi.train(sentences=X_train.tolist())
     X = lsi.get_lsi_u(sentences=X_train)
-    train_dnn(model, X, t_train, epochs=2, batch_size=30)
+    train_dnn(model, X, t_train, epochs=100, batch_size=30)
 
     X_test = lsi.get_lsi_u(sentences=X_test.tolist())
 

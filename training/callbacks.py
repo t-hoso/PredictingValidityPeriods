@@ -13,8 +13,8 @@ class EarlyStopping:
                 if self.verbose:
                     print('early stopping')
                 return True
-            else:
+        else:
                 self._step = 0
                 self._loss = loss
 
-            return False
+        return False
