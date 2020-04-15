@@ -57,27 +57,14 @@ class LsiSvd():
         lsi_list = []
         for sentence in sentences:
             tfidf_sentence = self.tfidf[[self.dct.doc2bow(nltk.word_tokenize(sentence))]]
-            #for t in tfidf_sentence[0]:
-            #    print(list(t))
-            #print(list(tfidf_sentence[0]))
-#            print("tfidf")
             tfidf_sentence = np.array([list(t) for t in tfidf_sentence[0]])
-#            print(tfidf_sentence)
 
             shape = tfidf_sentence[:, 1].shape
             shape = list(shape)
             shape.append(1)
-            #print(shape)
-#            print("lsi",self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)].shape,shape)
-#            print("lsi",(self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape)).shape)
-#            print("sum-what is necessary", (self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape)).sum(axis=0).shape)
 
             lsi_list.append((self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape)).sum(axis=0))
         return np.array(lsi_list)
-        #tfidf_sentences = self.tfidf[self.dct.doc2bow(nltk.word_tokenize(s)) for s in sentences]
-        #tfidf_sentences = np.array([[t[0], t[1]] for t in tfidf_sentences])
-        #print(tfidf_sentences)
-        #return self.lsi_svd[tfidf_sentences[:,0].astype(np.int)]*tfidf_sentences[:,1]
 
 
 if __name__ == '__main__':
@@ -138,16 +125,12 @@ if __name__ == '__main__':
     tfidf_corpus = tfidf_model[corpus]
     lsi = LsiModel(corpus=tfidf_corpus, id2word=dct, num_topics=10)
 
-    #print(lsi[tfidf_model[dct.doc2bow(nltk.word_tokenize("I am a dog"))]])
-    #print(tfidf_model[dct.doc2bow(nltk.word_tokenize("I am a dog"))])
     s = np.zeros_like((lsi.projection.u[0]))
     sentences = ["I am a dog", "I have been teaching English for a long time"]
-    #print([tfidf_model[dct.doc2bow(nltk.word_tokenize(s))] for s in sentences])
     print("model",tfidf_model[dct.doc2bow(nltk.word_tokenize(sentences[0]))])
     print("model",tfidf_model[dct.doc2bow(nltk.word_tokenize(sentences[1]))])
     tfidf_s  = [tfidf_model[dct.doc2bow(nltk.word_tokenize(s))] for s in sentences] # atteru
     print("tfidfs",tfidf_s)
-#    tfidf_l = [[[t[0], t[1]] for t in tfid] for tfid in tfidf_s] # atteru
     tfidf_l = [np.array([list(t) for t in tfid]) for tfid in tfidf_s]
     print("test",tfidf_l)
     print("lsi_output", lsi[tfidf_s[0]])
@@ -157,15 +140,3 @@ if __name__ == '__main__':
     for t in tfidf_model[dct.doc2bow(nltk.word_tokenize("I am a dog"))]:
         s += lsi.projection.u[t[0]] * t[1]
     print(s)
-#    print(lsi.projection.u[tfidf_model[dct.doc2bow(nltk.word_tokenize("I am a dog"))]])
-    #print(len(dct))
-    #print(type(lsi))
-    #print(type(lsi.projection.u))
-    #print(lsi.projection.u[:,:5].shape)
-    #print(lsi[tfidf_model[dct.doc2bow(nltk.word_tokenize("I am a dog"))]])
-    #print(lsi.projection.u[])
-#    for i in range(10):
-##      print(lsi.print_topic(topicno=i,topn=5,))
-#    for topics in lsi[tfidf_corpus]:
-#        print(topics)
-
