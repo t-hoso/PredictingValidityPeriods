@@ -40,6 +40,7 @@ def train_dnn(model, X, y, epochs, batch_size):
             loss = criterion(y, preds)
             val_loss(loss)
             val_acc(y, preds)
+            return preds
 
         X_, y_ = shuffle(X_train, y_train)
 
@@ -48,7 +49,7 @@ def train_dnn(model, X, y, epochs, batch_size):
             end = batch_size + start
             train_step(X[start:end], y[start:end])
 
-        val_step(X_val, y_val)
+        preds = val_step(X_val, y_val)
 
         hist['val_acc'].append(val_acc.result())
         hist['val_loss'].append(val_loss.result())

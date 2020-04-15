@@ -14,10 +14,10 @@ class DNN(Model):
                         use_bias=True, activity_regularizer=None, bias_regularizer=None, kernel_regularizer=None,
                         bias_constraint=None, kernel_constraint=None, name="dense2")
         self.d2 = Dropout(rate=0.75, noise_shape=None, name="dropout2")
-        self.y = Dense(output_dim, activation='softmax', kernel_initializer='glorot_uniform', bias_initializer='zeros',
+        self.l3 = Dense(output_dim, activation='softmax', kernel_initializer='glorot_uniform', bias_initializer='zeros',
                        use_bias=True, activity_regularizer=None, kernel_regularizer=None, bias_regularizer=None,
                        kernel_constraint=None, bias_constraint=None, name="output")
-        self.ls = [self.l1, self.d1, self.l2, self.d2, self.y]
+        self.ls = [self.l1, self.d1, self.l2, self.d2, self.l3]
 
     def call(self, x):
         for layer in self.ls:

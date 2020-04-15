@@ -57,13 +57,22 @@ class LsiSvd():
         lsi_list = []
         for sentence in sentences:
             tfidf_sentence = self.tfidf[[self.dct.doc2bow(nltk.word_tokenize(sentence))]]
-            tfidf_sentence = np.array([[t[0], t[1]] for t in tfidf_sentence])
+            #for t in tfidf_sentence[0]:
+            #    print(list(t))
+            #print(list(tfidf_sentence[0]))
+#            print("tfidf")
+            tfidf_sentence = np.array([list(t) for t in tfidf_sentence[0]])
+#            print(tfidf_sentence)
 
             shape = tfidf_sentence[:, 1].shape
             shape = list(shape)
             shape.append(1)
+            #print(shape)
+#            print("lsi",self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)].shape,shape)
+#            print("lsi",(self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape)).shape)
+#            print("sum-what is necessary", (self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape)).sum(axis=0).shape)
 
-            lsi_list.append(self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape))
+            lsi_list.append((self.lsi_svd[tfidf_sentence[:, 0].astype(np.int)] * tfidf_sentence[:, 1].reshape(shape)).sum(axis=0))
         return np.array(lsi_list)
         #tfidf_sentences = self.tfidf[self.dct.doc2bow(nltk.word_tokenize(s)) for s in sentences]
         #tfidf_sentences = np.array([[t[0], t[1]] for t in tfidf_sentences])
@@ -139,8 +148,10 @@ if __name__ == '__main__':
     tfidf_s  = [tfidf_model[dct.doc2bow(nltk.word_tokenize(s))] for s in sentences] # atteru
     print("tfidfs",tfidf_s)
 #    tfidf_l = [[[t[0], t[1]] for t in tfid] for tfid in tfidf_s] # atteru
-    tfidf_l = [np.array([[t[0], t[1]] for t in tfid]) for tfid in tfidf_s] # atteru
+    tfidf_l = [np.array([list(t) for t in tfid]) for tfid in tfidf_s]
     print("test",tfidf_l)
+    print("lsi_output", lsi[tfidf_s[0]])
+#    print("lsi_output", lsi[tfidf_s[0]].shape)
     print(lsi.projection.u[tfidf_l[:,0].astype(np.int)])
     print(lsi.projection.u[tfidf_l[:,0]]*tfidf_l[:,1])
     for t in tfidf_model[dct.doc2bow(nltk.word_tokenize("I am a dog"))]:

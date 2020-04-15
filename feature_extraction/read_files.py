@@ -32,4 +32,5 @@ def read_all_sentences():
                 t.append([int(num)-1])
 
     n_labels = len(np.unique(t))
-    return (np.array(X), np.eye(n_labels)[t])
+    #print("one-hot",np.eye(n_labels)[t].reshape(-1,5))
+    return (np.array(X), np.eye(n_labels)[t].reshape(-1,5))
