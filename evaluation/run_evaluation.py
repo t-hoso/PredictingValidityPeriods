@@ -25,7 +25,26 @@ def evaluate_model(model, X_test, t_test):
     f1 = f1_score(t_test, one_hot_preds, average='micro')
     print('f1', f1)
 
-if __name__ == '__main__':
+def average_length():
+    tf.random.set_seed(920)
+    np.random.seed(920)
+
+    test_size=0.3
+    model = DNN()
+    X, t = read_all_sentences()
+    X_train, X_test, t_train, t_test = train_test_split(X, t, test_size=test_size)
+    X_train_tokenized = tokenize_sentences(sentences=X_train.tolist())
+    X_train_awl = average_word_length(X_train_tokenized)
+    print(X_train_awl.shape)
+    train_dnn(model, X_train_awl, t_train, epochs=20, batch_size=30)
+
+    X_test_awl = average_word_length(X_test)
+    print(X_test_awl)
+
+    evaluate_model(model, X_test_awl, t_test)
+
+
+def main():
     tf.random.set_seed(920)
     np.random.seed(920)
 
@@ -43,3 +62,7 @@ if __name__ == '__main__':
     X_test = lsi.get_lsi_u(sentences=X_test.tolist())
 
     evaluate_model(model, X_test, t_test)
+
+if __name__ == '__main__':
+    #main()
+    average_length()

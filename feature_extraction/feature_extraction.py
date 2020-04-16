@@ -15,7 +15,7 @@ def average_word_length(tokenized_sentences):
     :param tokenized_sentences: a list of tokenized sentences, which is provided by tokenize_sentences
     :return: np.array, average_word_length of each sentences
     """
-    length = [np.array(list(map(len, tokenized_sentence))).mean() for tokenized_sentence in tokenized_sentences]
+    length = [[np.array(list(map(len, tokenized_sentence))).mean()] for tokenized_sentence in tokenized_sentences]
     return np.array(length)
 
 def test():
