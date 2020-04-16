@@ -3,6 +3,7 @@ from training.train_models import train_dnn
 from models.models import DNN
 from feature_extraction.lsa import LsiSvd
 from feature_extraction.read_files import read_all_sentences
+from feature_extraction.feature_extraction import tokenize_sentences, average_word_length
 from sklearn.model_selection import train_test_split
 import numpy as np
 import tensorflow as tf
@@ -34,8 +35,10 @@ if __name__ == '__main__':
     X_train, X_test, t_train, t_test = train_test_split(X, t, test_size=test_size)
     lsi = LsiSvd()
     lsi.train(sentences=X_train.tolist())
-    X = lsi.get_lsi_u(sentences=X_train)
-    train_dnn(model, X, t_train, epochs=100, batch_size=30)
+    X_train_lsi = lsi.get_lsi_u(sentences=X_train)
+    X_train_tokenized = tokenize_sentences(sentences=X_train.tolist())
+    X_train_awl = average_word_length(X_train_tokenized)
+    train_dnn(model, X_train_lsi, t_train, epochs=100, batch_size=30)
 
     X_test = lsi.get_lsi_u(sentences=X_test.tolist())
 

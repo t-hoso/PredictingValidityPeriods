@@ -17,11 +17,6 @@ def average_word_length(tokenized_sentences):
     """
     length = [np.array(list(map(len, tokenized_sentence))).mean() for tokenized_sentence in tokenized_sentences]
     return np.array(length)
-    ##token_length = []
-    #[list(map(len, tokenized_sentence)) for tokenized_sentence in tokenize_sentences()]
-    #for tokenized_sentence in tokenized_sentences:
-    #    [len(token) for token in tokenized_sentence]
-    #return [len(token) for token in tokenized_sentence]
 
 def test():
     sentences = ["I lost my wallet", "You got to be kidding me"]
