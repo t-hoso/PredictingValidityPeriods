@@ -57,12 +57,14 @@ def main():
     X_train_lsi = lsi.get_lsi_u(sentences=X_train)
     X_train_tokenized = tokenize_sentences(sentences=X_train.tolist())
     X_train_awl = average_word_length(X_train_tokenized)
-    train_dnn(model, X_train_lsi, t_train, epochs=100, batch_size=30)
+    train_dnn(model, np.concatenate([X_train_lsi, X_train_awl], axis=1), t_train, epochs=100, batch_size=30)
 
-    X_test = lsi.get_lsi_u(sentences=X_test.tolist())
+    X_test_lsi = lsi.get_lsi_u(sentences=X_test.tolist())
+    X_test_tokenized = tokenize_sentences(sentences=X_test.tolist())
+    X_test_awl = average_word_length(X_test_tokenized)
 
-    evaluate_model(model, X_test, t_test)
+    evaluate_model(model, np.concatenate([X_test_lsi, X_test_awl], axis=1), t_test)
 
 if __name__ == '__main__':
-    #main()
-    average_length()
+    main()
+    #average_length()
