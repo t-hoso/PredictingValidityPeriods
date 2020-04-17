@@ -29,6 +29,14 @@ def sentence_length(tokenized_sentences):
     length = [[len(tokenized_sentence)] for tokenized_sentence in tokenized_sentences]
     return np.array(length)
 
+def pos_tag(tokenized_sentences):
+    """
+    returns pos_tag matrices of each tokenized sentence
+    :param sentences: a list of tokenized sentences
+    :return: the count of pos_tag matrices
+    """
+    return np.array([nltk.pos_tag(tokenized_sentence) for tokenized_sentence in tokenized_sentences])
+
 def test():
     sentences = ["I lost my wallet", "You got to be kidding me"]
     tokenize_sentences(sentences)
