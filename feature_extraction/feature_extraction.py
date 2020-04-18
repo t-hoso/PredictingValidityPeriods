@@ -35,12 +35,46 @@ def pos_tag(tokenized_sentences):
     :param sentences: a list of tokenized sentences
     :return: the count of pos_tag matrices
     """
-    return np.array([nltk.pos_tag(tokenized_sentence) for tokenized_sentence in tokenized_sentences])
+    tags = np.array(["CC", "CD", "DT", "EX", "FW",
+                     "IN", "JJ", "JJR", "JJS", "LS",
+                     "MD", "NN", "NNS", "NNP", "NNPS",
+                     "PDT", "POS", "PRP", "PRP$", "RB",
+                     "RBR", "RBS", "RP", "TO", "UH",
+                     "VB", "VBD", "VBG", "VBN", "VBP",
+                     "VBZ", "WDT", "WP", "WP$", "WRB"])
+
+    sentences = ["I lost my wallet", "You got to be kidding me"]
+    tokenized_sentences = tokenize_sentences(sentences)
+    sentence_pos = [np.array(list(map(list, s)))[:, 1] for s in nltk.pos_tag_sents(tokenized_sentences)]
+    matrices = []
+    for s_p in sentence_pos:
+        tag_matrix = np.zeros(tags.shape)
+        for p in s_p:
+            tag_matrix[tags == p] += 1
+        matrices.append(tag_matrix)
+
+    return np.array(matrices)
 
 def test():
+    tags = np.array(["CC", "CD", "DT", "EX", "FW",
+            "IN", "JJ", "JJR", "JJS", "LS",
+            "MD", "NN", "NNS", "NNP", "NNPS",
+            "PDT", "POS", "PRP", "PRP$", "RB",
+            "RBR", "RBS", "RP", "TO", "UH",
+            "VB", "VBD", "VBG", "VBN", "VBP",
+            "VBZ", "WDT", "WP", "WP$", "WRB"])
+
     sentences = ["I lost my wallet", "You got to be kidding me"]
-    tokenize_sentences(sentences)
-    print(average_word_length(tokenize_sentences(sentences)))
+    tokenized_sentences = tokenize_sentences(sentences)
+    sentence_pos = [np.array(list(map(list, s)))[:, 1] for s in nltk.pos_tag_sents(tokenized_sentences)]
+    matrices = []
+    for s_p in sentence_pos:
+        tag_matrix = np.zeros(tags.shape)
+        for p in s_p:
+            tag_matrix[tags == p] += 1
+        matrices.append(tag_matrix)
+
+    return np.array(matrices)
 
 if __name__ == '__main__':
-    test()
+    print(test())
