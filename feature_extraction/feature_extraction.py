@@ -43,8 +43,6 @@ def pos_tag(tokenized_sentences):
                      "VB", "VBD", "VBG", "VBN", "VBP",
                      "VBZ", "WDT", "WP", "WP$", "WRB"])
 
-    sentences = ["I lost my wallet", "You got to be kidding me"]
-    tokenized_sentences = tokenize_sentences(sentences)
     sentence_pos = [np.array(list(map(list, s)))[:, 1] for s in nltk.pos_tag_sents(tokenized_sentences)]
     matrices = []
     for s_p in sentence_pos:

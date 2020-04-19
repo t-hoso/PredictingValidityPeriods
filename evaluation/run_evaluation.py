@@ -3,7 +3,7 @@ from training.train_models import train_dnn
 from models.models import DNN
 from feature_extraction.lsa import LsiSvd
 from feature_extraction.read_files import read_all_sentences
-from feature_extraction.feature_extraction import tokenize_sentences, average_word_length, sentence_length
+from feature_extraction.feature_extraction import tokenize_sentences, average_word_length, sentence_length, pos_tag
 from sklearn.model_selection import train_test_split
 import numpy as np
 import tensorflow as tf
@@ -73,14 +73,16 @@ def main():
     X_train_tokenized = tokenize_sentences(sentences=X_train.tolist())
     X_train_awl = average_word_length(X_train_tokenized)
     X_train_sl = sentence_length(X_train_tokenized)
-    train_dnn(model, np.concatenate([X_train_lsi, X_train_awl, X_train_sl], axis=1), t_train, epochs=100, batch_size=30)
+    X_train_pt = pos_tag(X_train_tokenized)
+    train_dnn(model, np.concatenate([X_train_lsi, X_train_awl, X_train_sl, X_train_pt], axis=1), t_train, epochs=100, batch_size=30)
 
     X_test_lsi = lsi.get_lsi_u(sentences=X_test.tolist())
     X_test_tokenized = tokenize_sentences(sentences=X_test.tolist())
     X_test_awl = average_word_length(X_test_tokenized)
     X_test_sl = sentence_length(X_test_tokenized)
+    X_test_pt = pos_tag(X_test_tokenized)
 
-    evaluate_model(model, np.concatenate([X_test_lsi, X_test_awl, X_test_sl], axis=1), t_test)
+    evaluate_model(model, np.concatenate([X_test_lsi, X_test_awl, X_test_sl, X_test_pt], axis=1), t_test)
 
 if __name__ == '__main__':
     main()
