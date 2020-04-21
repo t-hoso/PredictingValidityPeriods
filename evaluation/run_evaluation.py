@@ -7,6 +7,7 @@ from feature_extraction.feature_extraction import tokenize_sentences, average_wo
 from sklearn.model_selection import train_test_split
 import numpy as np
 import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler
 
 def evaluate_model(model, X_test, t_test):
 
@@ -67,6 +68,8 @@ def main():
     model = DNN()
     X, t = read_all_sentences()
     X_train, X_test, t_train, t_test = train_test_split(X, t, test_size=test_size)
+
+    # this part should be other function. if possible, it should be in preprocessing package
     lsi = LsiSvd()
     lsi.train(sentences=X_train.tolist())
     X_train_lsi = lsi.get_lsi_u(sentences=X_train)
@@ -74,6 +77,14 @@ def main():
     X_train_awl = average_word_length(X_train_tokenized)
     X_train_sl = sentence_length(X_train_tokenized)
     X_train_pt = pos_tag(X_train_tokenized)
+
+    # normalization
+    # according to the paper, normalization is done
+    # However, it is not sure that it is done according to all, rows, or columns
+    X_train_features = np.concatenate([X_train_lsi, X_train_awl, X_train_sl, X_train_pt])
+    scaler = MinMaxScaler()
+    X_train_normalized = scaler.fit_transform(X_train_features)\
+
     train_dnn(model, np.concatenate([X_train_lsi, X_train_awl, X_train_sl, X_train_pt], axis=1), t_train, epochs=100, batch_size=30)
 
     X_test_lsi = lsi.get_lsi_u(sentences=X_test.tolist())
